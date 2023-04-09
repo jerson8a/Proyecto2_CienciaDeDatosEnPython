@@ -7,51 +7,51 @@ CREATE SCHEMA IF NOT EXISTS `dw_ingresos_municipales` DEFAULT CHARACTER SET utf8
 USE `dw_ingresos_municipales` ;
 
 CREATE TABLE IF NOT EXISTS `dw_ingresos_municipales`.`DIM_REGION` (
-  `iddim_region` INT NOT NULL AUTO_INCREMENT,
   `region` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`iddim_region`))
+  PRIMARY KEY (`region`),
+  UNIQUE INDEX `region_UNIQUE` (`region` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `dw_ingresos_municipales`.`DIM_ENTIDAD` (
-  `iddim_entidad` INT NOT NULL AUTO_INCREMENT,
   `codigo_entidad` INT NOT NULL,
   `nombre_entidad` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`iddim_entidad`))
+  PRIMARY KEY (`codigo_entidad`),
+  UNIQUE INDEX `codigo_entidad_UNIQUE` (`codigo_entidad` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `dw_ingresos_municipales`.`DIM_DEPARTAMENTO` (
-  `iddim_departamento` INT NOT NULL AUTO_INCREMENT,
   `codigo_departamento` INT NOT NULL,
   `nombre_departamento` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`iddim_departamento`))
+  PRIMARY KEY (`codigo_departamento`),
+  UNIQUE INDEX `codigo_departamento_UNIQUE` (`codigo_departamento` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `dw_ingresos_municipales`.`DIM_CLASE` (
-  `iddim_clase` INT NOT NULL AUTO_INCREMENT,
   `codigo_clase` INT NOT NULL,
   `nombre_clase` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`iddim_clase`))
+  PRIMARY KEY (`codigo_clase`),
+  UNIQUE INDEX `codigo_clase_UNIQUE` (`codigo_clase` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `dw_ingresos_municipales`.`DIM_SECCION` (
-  `iddim_seccion` INT NOT NULL AUTO_INCREMENT,
   `codigo_seccion` INT NOT NULL,
   `nombre_seccion` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`iddim_seccion`))
+  PRIMARY KEY (`codigo_seccion`),
+  UNIQUE INDEX `codigo_seccion_UNIQUE` (`codigo_seccion` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `dw_ingresos_municipales`.`DIM_GRUPO` (
-  `iddim_grupo` INT NOT NULL AUTO_INCREMENT,
-  `codigo_grupo` INT NULL,
-  `nombre_grupo` VARCHAR(100) NULL,
-  PRIMARY KEY (`iddim_grupo`))
+  `codigo_grupo` INT NOT NULL,
+  `nombre_grupo` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`codigo_grupo`),
+  UNIQUE INDEX `codigo_grupo_UNIQUE` (`codigo_grupo` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `dw_ingresos_municipales`.`DIM_RECURSO` (
-  `iddim_recurso` INT NOT NULL AUTO_INCREMENT,
   `codigo_recurso` INT NOT NULL,
   `nombre_recurso` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`iddim_recurso`))
+  PRIMARY KEY (`codigo_recurso`),
+  UNIQUE INDEX `codigo_recurso_UNIQUE` (`codigo_recurso` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `dw_ingresos_municipales`.`FACT_TRANSACCION` (
@@ -62,54 +62,54 @@ CREATE TABLE IF NOT EXISTS `dw_ingresos_municipales`.`FACT_TRANSACCION` (
   `vigente` DECIMAL(12,8) NOT NULL DEFAULT 0,
   `devengado` DECIMAL(12,8) NOT NULL DEFAULT 0,
   `percibido` DECIMAL(12,8) NOT NULL DEFAULT 0,
-  `iddim_region` INT NOT NULL,
-  `iddim_entidad` INT NOT NULL,
-  `iddim_departamento` INT NOT NULL,
-  `ddim_clase` INT NOT NULL,
-  `iddim_seccion` INT NOT NULL,
-  `iddim_grupo` INT NOT NULL,
-  `iddim_recurso` INT NOT NULL,
+  `region` VARCHAR(100) NOT NULL,
+  `codigo_entidad` INT NOT NULL,
+  `codigo_departamento` INT NOT NULL,
+  `codigo_clase` INT NOT NULL,
+  `codigo_seccion` INT NOT NULL,
+  `codigo_grupo` INT NOT NULL,
+  `codigo_recurso` INT NOT NULL,
   PRIMARY KEY (`idFACT_TRANSACCION`),
-  INDEX `fk_FACT_TRANSACCION_dim_region_idx` (`iddim_region` ASC) VISIBLE,
-  INDEX `fk_FACT_TRANSACCION_dim_entidad1_idx` (`iddim_entidad` ASC) VISIBLE,
-  INDEX `fk_FACT_TRANSACCION_dim_departamento1_idx` (`iddim_departamento` ASC) VISIBLE,
-  INDEX `fk_FACT_TRANSACCION_dim_clase1_idx` (`ddim_clase` ASC) VISIBLE,
-  INDEX `fk_FACT_TRANSACCION_dim_seccion1_idx` (`iddim_seccion` ASC) VISIBLE,
-  INDEX `fk_FACT_TRANSACCION_dim_grupo1_idx` (`iddim_grupo` ASC) VISIBLE,
-  INDEX `fk_FACT_TRANSACCION_dim_recurso1_idx` (`iddim_recurso` ASC) VISIBLE,
-  CONSTRAINT `fk_FACT_TRANSACCION_dim_region`
-    FOREIGN KEY (`iddim_region`)
-    REFERENCES `dw_ingresos_municipales`.`DIM_REGION` (`iddim_region`)
+  INDEX `fk_FACT_TRANSACCION_DIM_REGION1_idx` (`region` ASC) VISIBLE,
+  INDEX `fk_FACT_TRANSACCION_DIM_ENTIDAD1_idx` (`codigo_entidad` ASC) VISIBLE,
+  INDEX `fk_FACT_TRANSACCION_DIM_DEPARTAMENTO1_idx` (`codigo_departamento` ASC) VISIBLE,
+  INDEX `fk_FACT_TRANSACCION_DIM_CLASE1_idx` (`codigo_clase` ASC) VISIBLE,
+  INDEX `fk_FACT_TRANSACCION_DIM_SECCION1_idx` (`codigo_seccion` ASC) VISIBLE,
+  INDEX `fk_FACT_TRANSACCION_DIM_GRUPO1_idx` (`codigo_grupo` ASC) VISIBLE,
+  INDEX `fk_FACT_TRANSACCION_DIM_RECURSO1_idx` (`codigo_recurso` ASC) VISIBLE,
+  CONSTRAINT `fk_FACT_TRANSACCION_DIM_REGION1`
+    FOREIGN KEY (`region`)
+    REFERENCES `dw_ingresos_municipales`.`DIM_REGION` (`region`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_FACT_TRANSACCION_dim_entidad1`
-    FOREIGN KEY (`iddim_entidad`)
-    REFERENCES `dw_ingresos_municipales`.`DIM_ENTIDAD` (`iddim_entidad`)
+  CONSTRAINT `fk_FACT_TRANSACCION_DIM_ENTIDAD1`
+    FOREIGN KEY (`codigo_entidad`)
+    REFERENCES `dw_ingresos_municipales`.`DIM_ENTIDAD` (`codigo_entidad`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_FACT_TRANSACCION_dim_departamento1`
-    FOREIGN KEY (`iddim_departamento`)
-    REFERENCES `dw_ingresos_municipales`.`DIM_DEPARTAMENTO` (`iddim_departamento`)
+  CONSTRAINT `fk_FACT_TRANSACCION_DIM_DEPARTAMENTO1`
+    FOREIGN KEY (`codigo_departamento`)
+    REFERENCES `dw_ingresos_municipales`.`DIM_DEPARTAMENTO` (`codigo_departamento`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_FACT_TRANSACCION_dim_clase1`
-    FOREIGN KEY (`ddim_clase`)
-    REFERENCES `dw_ingresos_municipales`.`DIM_CLASE` (`iddim_clase`)
+  CONSTRAINT `fk_FACT_TRANSACCION_DIM_CLASE1`
+    FOREIGN KEY (`codigo_clase`)
+    REFERENCES `dw_ingresos_municipales`.`DIM_CLASE` (`codigo_clase`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_FACT_TRANSACCION_dim_seccion1`
-    FOREIGN KEY (`iddim_seccion`)
-    REFERENCES `dw_ingresos_municipales`.`DIM_SECCION` (`iddim_seccion`)
+  CONSTRAINT `fk_FACT_TRANSACCION_DIM_SECCION1`
+    FOREIGN KEY (`codigo_seccion`)
+    REFERENCES `dw_ingresos_municipales`.`DIM_SECCION` (`codigo_seccion`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_FACT_TRANSACCION_dim_grupo1`
-    FOREIGN KEY (`iddim_grupo`)
-    REFERENCES `dw_ingresos_municipales`.`DIM_GRUPO` (`iddim_grupo`)
+  CONSTRAINT `fk_FACT_TRANSACCION_DIM_GRUPO1`
+    FOREIGN KEY (`codigo_grupo`)
+    REFERENCES `dw_ingresos_municipales`.`DIM_GRUPO` (`codigo_grupo`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_FACT_TRANSACCION_dim_recurso1`
-    FOREIGN KEY (`iddim_recurso`)
-    REFERENCES `dw_ingresos_municipales`.`DIM_RECURSO` (`iddim_recurso`)
+  CONSTRAINT `fk_FACT_TRANSACCION_DIM_RECURSO1`
+    FOREIGN KEY (`codigo_recurso`)
+    REFERENCES `dw_ingresos_municipales`.`DIM_RECURSO` (`codigo_recurso`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
