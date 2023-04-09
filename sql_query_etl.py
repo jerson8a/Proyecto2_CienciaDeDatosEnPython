@@ -3,58 +3,58 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
-CREATE SCHEMA IF NOT EXISTS `dw_ingresos_municipales` DEFAULT CHARACTER SET utf8 ;
+CREATE SCHEMA IF NOT EXISTS `fuente_ingresos_muni_mysql` DEFAULT CHARACTER SET utf8 ;
 USE `fuente_ingresos_muni_mysql` ;
 
-CREATE TABLE IF NOT EXISTS `dw_ingresos_municipales`.`DIM_REGION` (
+CREATE TABLE IF NOT EXISTS `fuente_ingresos_muni_mysql`.`DIM_REGION` (
   `region` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`region`),
   UNIQUE INDEX `region_UNIQUE` (`region` ASC) VISIBLE)
 ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `dw_ingresos_municipales`.`DIM_ENTIDAD` (
+CREATE TABLE IF NOT EXISTS `fuente_ingresos_muni_mysql`.`DIM_ENTIDAD` (
   `codigo_entidad` INT NOT NULL,
   `nombre_entidad` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`codigo_entidad`),
   UNIQUE INDEX `codigo_entidad_UNIQUE` (`codigo_entidad` ASC) VISIBLE)
 ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `dw_ingresos_municipales`.`DIM_DEPARTAMENTO` (
+CREATE TABLE IF NOT EXISTS `fuente_ingresos_muni_mysql`.`DIM_DEPARTAMENTO` (
   `codigo_departamento` INT NOT NULL,
   `nombre_departamento` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`codigo_departamento`),
   UNIQUE INDEX `codigo_departamento_UNIQUE` (`codigo_departamento` ASC) VISIBLE)
 ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `dw_ingresos_municipales`.`DIM_CLASE` (
+CREATE TABLE IF NOT EXISTS `fuente_ingresos_muni_mysql`.`DIM_CLASE` (
   `codigo_clase` INT NOT NULL,
   `nombre_clase` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`codigo_clase`),
   UNIQUE INDEX `codigo_clase_UNIQUE` (`codigo_clase` ASC) VISIBLE)
 ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `dw_ingresos_municipales`.`DIM_SECCION` (
+CREATE TABLE IF NOT EXISTS `fuente_ingresos_muni_mysql`.`DIM_SECCION` (
   `codigo_seccion` INT NOT NULL,
   `nombre_seccion` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`codigo_seccion`),
   UNIQUE INDEX `codigo_seccion_UNIQUE` (`codigo_seccion` ASC) VISIBLE)
 ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `dw_ingresos_municipales`.`DIM_GRUPO` (
+CREATE TABLE IF NOT EXISTS `fuente_ingresos_muni_mysql`.`DIM_GRUPO` (
   `codigo_grupo` INT NOT NULL,
   `nombre_grupo` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`codigo_grupo`),
   UNIQUE INDEX `codigo_grupo_UNIQUE` (`codigo_grupo` ASC) VISIBLE)
 ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `dw_ingresos_municipales`.`DIM_RECURSO` (
+CREATE TABLE IF NOT EXISTS `fuente_ingresos_muni_mysql`.`DIM_RECURSO` (
   `codigo_recurso` INT NOT NULL,
   `nombre_recurso` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`codigo_recurso`),
   UNIQUE INDEX `codigo_recurso_UNIQUE` (`codigo_recurso` ASC) VISIBLE)
 ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `dw_ingresos_municipales`.`FACT_TRANSACCION` (
+CREATE TABLE IF NOT EXISTS `fuente_ingresos_muni_mysql`.`FACT_TRANSACCION` (
   `idFACT_TRANSACCION` INT NOT NULL AUTO_INCREMENT,
   `anio` INT NOT NULL,
   `asignado` DECIMAL(12,8) NOT NULL DEFAULT 0,
@@ -79,37 +79,37 @@ CREATE TABLE IF NOT EXISTS `dw_ingresos_municipales`.`FACT_TRANSACCION` (
   INDEX `fk_FACT_TRANSACCION_DIM_RECURSO1_idx` (`codigo_recurso` ASC) VISIBLE,
   CONSTRAINT `fk_FACT_TRANSACCION_DIM_REGION1`
     FOREIGN KEY (`region`)
-    REFERENCES `dw_ingresos_municipales`.`DIM_REGION` (`region`)
+    REFERENCES `fuente_ingresos_muni_mysql`.`DIM_REGION` (`region`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_FACT_TRANSACCION_DIM_ENTIDAD1`
     FOREIGN KEY (`codigo_entidad`)
-    REFERENCES `dw_ingresos_municipales`.`DIM_ENTIDAD` (`codigo_entidad`)
+    REFERENCES `fuente_ingresos_muni_mysql`.`DIM_ENTIDAD` (`codigo_entidad`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_FACT_TRANSACCION_DIM_DEPARTAMENTO1`
     FOREIGN KEY (`codigo_departamento`)
-    REFERENCES `dw_ingresos_municipales`.`DIM_DEPARTAMENTO` (`codigo_departamento`)
+    REFERENCES `fuente_ingresos_muni_mysql`.`DIM_DEPARTAMENTO` (`codigo_departamento`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_FACT_TRANSACCION_DIM_CLASE1`
     FOREIGN KEY (`codigo_clase`)
-    REFERENCES `dw_ingresos_municipales`.`DIM_CLASE` (`codigo_clase`)
+    REFERENCES `fuente_ingresos_muni_mysql`.`DIM_CLASE` (`codigo_clase`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_FACT_TRANSACCION_DIM_SECCION1`
     FOREIGN KEY (`codigo_seccion`)
-    REFERENCES `dw_ingresos_municipales`.`DIM_SECCION` (`codigo_seccion`)
+    REFERENCES `fuente_ingresos_muni_mysql`.`DIM_SECCION` (`codigo_seccion`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_FACT_TRANSACCION_DIM_GRUPO1`
     FOREIGN KEY (`codigo_grupo`)
-    REFERENCES `dw_ingresos_municipales`.`DIM_GRUPO` (`codigo_grupo`)
+    REFERENCES `fuente_ingresos_muni_mysql`.`DIM_GRUPO` (`codigo_grupo`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_FACT_TRANSACCION_DIM_RECURSO1`
     FOREIGN KEY (`codigo_recurso`)
-    REFERENCES `dw_ingresos_municipales`.`DIM_RECURSO` (`codigo_recurso`)
+    REFERENCES `fuente_ingresos_muni_mysql`.`DIM_RECURSO` (`codigo_recurso`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
